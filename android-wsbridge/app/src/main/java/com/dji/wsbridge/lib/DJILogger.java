@@ -1,14 +1,15 @@
 package com.dji.wsbridge.lib;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
+import androidx.annotation.IntDef;
+import androidx.annotation.StringDef;
 import android.text.TextUtils;
 import android.util.Log;
+
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.OkHttpResponseListener;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.dji.wsbridge.BuildConfig;
 
 import org.json.JSONException;
@@ -41,6 +42,8 @@ public class DJILogger extends Thread {
     private boolean isEnabled = false;
     private boolean isNetworkEnabled = true;
     private List<JSONObject> messageQueue;
+
+    FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
 
     private DJILogger() {
         messageQueue = Collections.synchronizedList(new ArrayList<JSONObject>());
@@ -167,7 +170,7 @@ public class DJILogger extends Thread {
             object.put("message", message);
             object.put("time_stamp", System.currentTimeMillis());
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            crashlytics.recordException(e);
 
             e.printStackTrace();
         }

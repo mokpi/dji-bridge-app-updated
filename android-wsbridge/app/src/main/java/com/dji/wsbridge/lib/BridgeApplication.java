@@ -5,12 +5,9 @@ import android.app.Application;
 import android.os.Bundle;
 import android.os.StrictMode;
 
-import com.crashlytics.android.Crashlytics;
 import com.dji.wsbridge.BuildConfig;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
-
-import io.fabric.sdk.android.Fabric;
 
 public class BridgeApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
@@ -25,9 +22,7 @@ public class BridgeApplication extends Application implements Application.Activi
     @Override
     public void onCreate() {
         super.onCreate();
-        if (BuildConfig.BUILD_TYPE != "debug") {
-            Fabric.with(this, new Crashlytics());
-        }
+
         DJILogger.init();
         instance = this;
         //registerActivityLifecycleCallbacks(this);

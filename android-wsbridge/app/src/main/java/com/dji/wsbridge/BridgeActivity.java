@@ -29,7 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.dji.wsbridge.lib.BridgeApplication;
 import com.dji.wsbridge.lib.BridgeUpdateService;
 import com.dji.wsbridge.lib.DJILogger;
@@ -78,6 +78,8 @@ public class BridgeActivity extends Activity {
     private StreamRunner wsToDeviceRunner;
     private ImageButton btnSettings, btnInstallUpdate;
     private BridgeUpdateService bridgeUpdateService;
+
+    FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
 
     //region -------------------------------------- Activity Callbacks and Helpers ---------------------------------------------
     @Override
@@ -317,12 +319,12 @@ public class BridgeActivity extends Activity {
                 deviceToWSRunner = new StreamRunner(wsInputStream, usbOutputStream, "Bridge to USB");
                 wsToDeviceRunner = new StreamRunner(usbInputStream, wsOutputStream, "USB to Bridge");
                 try {
-                    Crashlytics.log("Device to WS Runner alive "+ deviceToWSRunner.isAlive());
-                    Crashlytics.log("WS to Device Runner alive "+ wsToDeviceRunner.isAlive());
+                    crashlytics.log("Device to WS Runner alive "+ deviceToWSRunner.isAlive());
+                    crashlytics.log("WS to Device Runner alive "+ wsToDeviceRunner.isAlive());
                     deviceToWSRunner.start();
                     wsToDeviceRunner.start();
                 } catch (IllegalThreadStateException exception){
-                    Crashlytics.logException(exception);
+                    crashlytics.recordException(exception);
                     stopStreamTransfer();
                     new Handler().postDelayed(new Runnable() {
                         @Override
