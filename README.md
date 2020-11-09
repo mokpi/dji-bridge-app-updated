@@ -1,3 +1,7 @@
+(Forked from https://github.com/dji-sdk/Android-Bridge-App)
+
+Please place your `google-services.json` in `<project-root>/app/` directory, for Firebase Crashlytics.
+
 # Android-Bridge-App
 
 ## What is this?
